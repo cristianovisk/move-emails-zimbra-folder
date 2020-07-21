@@ -5,13 +5,19 @@
 # Site https://cristianovisk.github.io
 
 function moveMail {
+        porcent=$(echo "scale=2 ; 100 / `zmprov -l gaa | grep $domain | wc -l`" | bc)
+        append=0
     for email in `zmprov -l gaa | grep $domain`;
     do
+                percent=$(echo "scale=2 ; $porcent + $append" | bc)
+                append=$percent
+                echo -ne "$percent % - $email \r"
         for msgid in `zmmailbox -z -m "$email" s -l 999 -t message "in:$fOrig subject: $subject" | grep mess | awk '{print $2}'`;
             do
-                echo "Msg from $email, is moved for Inbox folder - MsgID: $msgid"   
+                                echo "Msg from $email, is moved for Inbox folder - MsgID: $msgid" >> report.log
                 zmmailbox -z -m "$email" mm $msgid $fDest;
             done;
+                echo -ne "                                                                        \r"
     done
 }
 
