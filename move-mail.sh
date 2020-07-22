@@ -14,7 +14,7 @@ function moveMail {
                 echo -ne "$percent % - $email \r"
         for msgid in `zmmailbox -z -m "$email" s -l 999 -t message "in:$fOrig subject: $subject" | grep mess | awk '{print $2}'`;
             do
-                                echo "Msg from $email, is moved for Inbox folder - MsgID: $msgid" >> report.log
+                                echo "Msg from $subject in $email, is moved for Inbox folder - MsgID: $msgid" >> report.log
                 zmmailbox -z -m "$email" mm $msgid $fDest;
             done;
                 echo -ne "                                                                        \r"
